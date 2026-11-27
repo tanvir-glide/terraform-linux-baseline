@@ -4,10 +4,10 @@ Two Terraform targets that create a test server and then run the
 [ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline)
 playbook against it:
 
-- **`libvirt/`** — an Ubuntu 24.04 cloud image booted as a KVM VM via
+- **`libvirt/`** - an Ubuntu 24.04 cloud image booted as a KVM VM via
   cloud-init, then hardened over SSH. This is the "authentic" target: a real
   machine with a real SSH port change
-- **`podman/`** — an Ubuntu 22.04 container with systemd, using rootless
+- **`podman/`** - an Ubuntu 22.04 container with systemd, using rootless
   Podman
 
 Both targets share the same `ansible/` submodule, so the hardening logic lives
@@ -29,7 +29,7 @@ in one place.
 ## Goal
 
 One `terraform apply` creates a server, either a libvirt/KVM VM or a rootless Podman
-container — and runs the [ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline) playbook in it.
+container - and runs the [ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline) playbook in it.
 
 ## Status
 
@@ -85,7 +85,7 @@ container — and runs the [ansible-linux-baseline](https://github.com/tanvir-gl
   ssh-keygen -t ed25519 -f ~/.ssh/libvirt_test -N ""
   cat ~/.ssh/libvirt_test.pub   # paste into libvirt/user-data.yaml
   ```
-* The Ubuntu Noble cloud image downloaded and placed at `libvirt/noble-server-cloudimg-amd64.img` (from https://cloud-images.ubuntu.com/noble/current/). The image is gitignored — it is 593 MB and should not live in the repository.
+* The Ubuntu Noble cloud image downloaded and placed at `libvirt/noble-server-cloudimg-amd64.img` (from https://cloud-images.ubuntu.com/noble/current/). The image is gitignored - it is 593 MB and should not live in the repository.
 
 ### podman target
 
