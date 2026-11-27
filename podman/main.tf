@@ -48,7 +48,7 @@ resource "terraform_data" "run_ansible_baseline" {
   ]
 
   provisioner "local-exec" {
-    working_dir = "${path.module}/ansible"
+    working_dir = "${path.module}/../ansible"
     command     = <<-EOT
       podman exec ${var.container_name} systemctl is-system-running --wait || true
       ansible-playbook -i "${var.container_name}," \
