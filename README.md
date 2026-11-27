@@ -22,6 +22,8 @@ One `terraform apply` creates a container and runs the [ansible-linux-baseline](
 - [x] The container uses rootless Podman. It needs no cloud account.
 - [x] The cgroup settings keep systemd running in the container.
 - [x] The Ansible step is not done yet. See the TODO section.
+---
+- [ ] Setup Proxmox VE to have a more authentic terraform experience
 
 ## Requirements
 
@@ -61,6 +63,11 @@ The default socket path is for user ID 1000. For another user ID, run `terraform
 
 - Host OS: Debian Linux with rootless Podman
 - Target container: Ubuntu 22.04 with systemd
+
+## Lessons learned
+- **Default values cause drift:** Podman sets default values for `network_mode`, `pid_mode`, and `ulimit` blocks when a container starts. Terraform reads those values back and marks them as changes that force replacement.
+- **Ignore runtime defaults:** Add `ignore_changes` in the `lifecycle` block for `network_mode`, `pid_mode`, and `ulimit` blocks. Avoid hardcoding `ulimit` numbers because host limits differ across machines.
+- **Replacement triggers destroy bugs:** Forced container replacement can trigger a Podman destroy error and block `-replace` or apply steps. Fixing drift with `ignore_changes` stops needless container replacement.
 
 ## TODO
 
