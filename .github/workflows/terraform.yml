@@ -29,8 +29,14 @@ jobs:
       - name: Check Terraform formatting
         run: terraform fmt -check -recursive
 
-      - name: Initialize Terraform
-        run: terraform init -backend=false
+      - name: Init and validate libvirt target
+        working-directory: libvirt
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
 
-      - name: Validate Terraform configuration
-        run: terraform validate
+      - name: Init and validate podman target
+        working-directory: podman
+        run: |
+          terraform init -backend=false -input=false
+          terraform validate
