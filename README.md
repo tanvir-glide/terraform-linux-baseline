@@ -75,7 +75,7 @@ The default socket path is for user ID 1000. For another user ID, run `terraform
 - [x] Run the playbook in the container. Confirm that the run passes.
 - [x] Check the result: SSH on port 2222, Fail2ban active, UFW default deny.
 ---
-- [ ] Add a GitHub Actions check for `terraform fmt` and `terraform validate`.
+- [x] Add a GitHub Actions check for `terraform fmt` and `terraform validate`.
 - [ ] Add a screenshot of the verify commands.
 - [ ] Use `for_each` to create a Debian, an Ubuntu, and a Rocky container.
 - [ ] Add a `validation` block to one variable.
