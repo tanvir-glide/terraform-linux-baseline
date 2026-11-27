@@ -23,7 +23,7 @@ One `terraform apply` creates a container and runs the [ansible-linux-baseline](
 - [x] The cgroup settings keep systemd running in the container.
 - [x] The Ansible step is not done yet. See the TODO section.
 ---
-- [ ] Setup Proxmox VE to have a more authentic terraform experience
+- [ ] Setup ~~Proxmox VE~~ libvert to have a more authentic terraform experience
 
 ## Requirements
 
