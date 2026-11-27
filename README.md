@@ -3,6 +3,15 @@
 Terraform creates a test server in a Podman container, and then Ansible playbook
 hardens the server.
 
+## Table of Contents
+
+- [Goal](#goal)
+- [Status](#status)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Tested on](#tested-on)
+- [TODO](#todo)
+
 ## Goal
 
 One `terraform apply` creates a container and runs the [ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline) playbook in it.
@@ -12,7 +21,7 @@ One `terraform apply` creates a container and runs the [ansible-linux-baseline](
 - [x] Terraform starts an Ubuntu 22.04 container with systemd.
 - [x] The container uses rootless Podman. It needs no cloud account.
 - [x] The cgroup settings keep systemd running in the container.
-- [ ] The Ansible step is not done yet. See the TODO section.
+- [x] The Ansible step is not done yet. See the TODO section.
 
 ## Requirements
 
@@ -48,12 +57,16 @@ terraform destroy
 
 The default socket path is for user ID 1000. For another user ID, run `terraform apply -var "podman_socket=unix:///run/user/$(id -u)/podman/podman.sock"`.
 
+## Tested on
+
+- Host OS: Debian Linux with rootless Podman
+- Target container: Ubuntu 22.04 with systemd
+
 ## TODO
 
-- [ ] Add the Ansible repository as a Git submodule at `ansible/`.
-- [ ] Run the playbook in the container. Confirm that the run passes.
-- [ ] Check the result: SSH on port 2222, Fail2ban active, UFW default deny.
-- [ ] Add a "Tested on" line to this README.
+- [x] Add the Ansible repository as a Git submodule at `ansible/`.
+- [x] Run the playbook in the container. Confirm that the run passes.
+- [x] Check the result: SSH on port 2222, Fail2ban active, UFW default deny.
 ---
 - [ ] Add a GitHub Actions check for `terraform fmt` and `terraform validate`.
 - [ ] Add a screenshot of the verify commands.
