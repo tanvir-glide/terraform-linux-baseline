@@ -42,7 +42,7 @@ resource "terraform_data" "run_ansible_baseline" {
   triggers_replace = [
     docker_container.test_server.id,
     sha1(join("", [
-      for f in fileset("${path.module}/ansible/roles", "**/*.yml") :
+      for f in fileset("${path.module}/../ansible/roles", "**/*.yml") :
       filesha1("${path.module}/ansible/roles/${f}")
     ])),
   ]
