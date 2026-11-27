@@ -1,0 +1,3 @@
+[submodule "ansible"]
+	path = ansible
+	url = https://github.com/tanvir-glide/ansible-linux-baseline.git
