@@ -23,7 +23,7 @@ One `terraform apply` creates a container and runs the [ansible-linux-baseline](
 - [x] The cgroup settings keep systemd running in the container.
 - [x] The Ansible step is not done yet. See the TODO section.
 ---
-- [ ] Setup ~~Proxmox VE~~ libvert to have a more authentic terraform experience
+- [x] Setup ~~Proxmox VE~~ libvert to have a more authentic terraform experience
 
 ## Requirements
 
@@ -79,6 +79,6 @@ The default socket path is for user ID 1000. For another user ID, run `terraform
 - [ ] Add a screenshot of the verify commands.
 - [ ] Use `for_each` to create a Debian, an Ubuntu, and a Rocky container.
 - [ ] Add a `validation` block to one variable.
-- [ ] Add a "Lessons learned" section.
+- [x] Add a "Lessons learned" section.
 ---
 - [ ] Add a second target for a cloud provider.
