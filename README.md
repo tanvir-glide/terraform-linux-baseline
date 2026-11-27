@@ -22,6 +22,7 @@ in one place.
   - [Libvirt](#libvirt)
   - [Podman](#podman)
 - [Tested on](#tested-on)
+- [Design Decisions](#design-decisions)
 - [Lessons learned](#lessons-learned)
 - [TODO](#todo)
 
@@ -163,6 +164,20 @@ terraform destroy
 - Host OS: Debian Linux with rootless Podman
 - libvirt target: Ubuntu 24.04 daily cloud image, KVM on an i3-6100U with 8 GB RAM
 - podman target: Ubuntu 22.04 container with systemd, rootless Podman
+
+## Design decisions
+
+- **Base image vs. overlay disk**: the downloaded image is never written to.
+  Each VM gets a QCOW2 overlay, so the 593 MB base is shared and a second VM
+  costs a few MB
+- **`terraform_data` over `null_resource`**: `terraform_data` is built into
+  Terraform 1.4+, has no provider dependency, and its `triggers_replace` is
+  explicit
+- **`validate` in CI, not `apply`**: nested virtualization on GitHub-hosted
+  runners is experimental. The full apply is verified locally; CI guards
+  syntax and provider config
+- **Molecule deferred to the submodule**: the Ansible role's CI lives in
+  `ansible-linux-baseline`. Duplicating it here adds no coverage
 
 ## Lessons learned
 
