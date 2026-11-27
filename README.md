@@ -5,7 +5,7 @@ hardens the server.
 
 ## Goal
 
-One `terraform apply` creates a container and runs the [ansible-linux-baseline](https://github.com/Tanvir101cmd/ansible-linux-baseline) playbook in it.
+One `terraform apply` creates a container and runs the [ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline) playbook in it.
 
 ## Status
 
