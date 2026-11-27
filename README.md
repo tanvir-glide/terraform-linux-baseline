@@ -1,7 +1,17 @@
 # terraform-linux-baseline [WIP]
 
-Terraform creates a test server in a Podman container, and then Ansible playbook
-hardens the server.
+Two Terraform targets that create a test server and then run the
+[ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline)
+playbook against it:
+
+- **`libvirt/`** — an Ubuntu 24.04 cloud image booted as a KVM VM via
+  cloud-init, then hardened over SSH. This is the "authentic" target: a real
+  machine with a real SSH port change
+- **`podman/`** — an Ubuntu 22.04 container with systemd, using rootless
+  Podman
+
+Both targets share the same `ansible/` submodule, so the hardening logic lives
+in one place.
 
 ## Table of Contents
 
@@ -18,12 +28,24 @@ One `terraform apply` creates a container and runs the [ansible-linux-baseline](
 
 ## Status
 
+### libvirt target
+
+- [x] Terraform imports an Ubuntu 24.04 (Noble) cloud image as a base volume.
+- [x] A qcow2 overlay disk is created from the base image, so the 593 MB
+      download is shared and never written to.
+- [x] cloud-init injects an SSH key and creates the `ubuntu` user on first
+      boot.
+- [x] The Ansible baseline runs over SSH from a `terraform_data` provisioner.
+- [x] Verified: UFW active, fail2ban active, SSH on port 2222, zram active,
+      `swap.img` removed.
+
+### Podman target
+
 - [x] Terraform starts an Ubuntu 22.04 container with systemd.
 - [x] The container uses rootless Podman. It needs no cloud account.
 - [x] The cgroup settings keep systemd running in the container.
-- [x] The Ansible step is not done yet. See the TODO section.
----
-- [x] Setup ~~Proxmox VE~~ libvert to have a more authentic terraform experience
+- [x] The Ansible baseline runs against the container via
+      `containers.podman.podman`.
 
 ## Requirements
 
@@ -62,7 +84,7 @@ The default socket path is for user ID 1000. For another user ID, run `terraform
 ## Tested on
 
 - Host OS: Debian Linux with rootless Podman
-- Target container: Ubuntu 22.04 with systemd
+- Target container: [Ubuntu 24.04](https://cloud-images.ubuntu.com/noble/20261017/noble-server-cloudimg-amd64.img)
 
 ## Lessons learned
 - **Default values cause drift:** Podman sets default values for `network_mode`, `pid_mode`, and `ulimit` blocks when a container starts. Terraform reads those values back and marks them as changes that force replacement.
