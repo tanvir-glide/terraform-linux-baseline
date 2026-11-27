@@ -23,10 +23,38 @@ resource "docker_container" "test_server" {
   privileged = true # systemd needs it in a container, test use only
   command    = ["/lib/systemd/systemd"]
 
+  # systemd stops at once in a rootless container without these two settings
   cgroupns_mode = "host"
 
   volumes {
     host_path      = "/sys/fs/cgroup"
     container_path = "/sys/fs/cgroup"
+  }
+
+  # Podman fills in these values. Without this block, every plan replaces the container.
+  lifecycle {
+    ignore_changes = [network_mode, pid_mode, ulimit]
+  }
+}
+
+resource "terraform_data" "run_ansible_baseline" {
+  # shortcut: playbook.yml is not hashed, use -replace when only it changes
+  triggers_replace = [
+    docker_container.test_server.id,
+    sha1(join("", [
+      for f in fileset("${path.module}/ansible/roles", "**/*.yml") :
+      filesha1("${path.module}/ansible/roles/${f}")
+    ])),
+  ]
+
+  provisioner "local-exec" {
+    working_dir = "${path.module}/ansible"
+    command     = <<-EOT
+      podman exec ${var.container_name} systemctl is-system-running --wait || true
+      ansible-playbook -i "${var.container_name}," \
+        -c containers.podman.podman \
+        --skip-tags tailscale,lynis \
+        playbook.yml
+    EOT
   }
 }
