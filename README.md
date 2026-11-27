@@ -1,4 +1,4 @@
-# terraform-linux-baseline [WIP]
+# terraform-linux-baseline
 
 Two Terraform targets that create a test server and then run the
 [ansible-linux-baseline](https://github.com/tanvir-glide/ansible-linux-baseline)
