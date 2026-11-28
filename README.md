@@ -80,11 +80,12 @@ container - and runs the [ansible-linux-baseline](https://github.com/tanvir-glid
   sudo virsh pool-start default
   sudo virsh pool-autostart default
   ```
-* An SSH keypair. The public key goes into `libvirt/user-data.yaml` so cloud-init can install it into the `ubuntu` account:
+  * An SSH keypair. Terraform reads the public key and gives it to cloud-init, which installs it in the `ubuntu` account:
   ```bash
   ssh-keygen -t ed25519 -f ~/.ssh/libvirt_test -N ""
-  cat ~/.ssh/libvirt_test.pub   # paste into libvirt/user-data.yaml
   ```
+  The default key path is `~/.ssh/libvirt_test`. To use another key, run `terraform apply -var "ssh_key_path=~/.ssh/other_key"`.
+
 * The Ubuntu Noble cloud image downloaded and placed at `libvirt/noble-server-cloudimg-amd64.img` (from https://cloud-images.ubuntu.com/noble/current/). The image is gitignored - it is 593 MB and should not live in the repository.
 
 ### podman target
@@ -221,7 +222,6 @@ terraform destroy
 
 ### libvirt
 - [ ] Pin the cloud image to a stable release instead of a daily build, or document the daily URL explicitly
-- [ ] Ship `user-data.yaml.example` and gitignore the real `user-data.yaml` so personal SSH keys stay out of git
 - [ ] Use `for_each` to create Debian, Ubuntu, and Rocky VMs from their respective cloud images. The Ansible role already has `debian.yml` and `redhat.yml` vars
 - [ ] Add a `validation` block to `disk_bytes` (minimum 5 GiB) and `memory_mb` (minimum 1024).
 
@@ -232,5 +232,4 @@ terraform destroy
 ### Repo-wide
 - [ ] Add a screenshot (or a text transcript) of the verify commands to the README
 - [ ] Wire the `ansible/` Molecule scenarios into CI so a role change fails the build, not just `terraform validate`
-- [ ] Add `pre-commit` hooks: `terraform fmt`, `tflint`, `ansible-lint`, `yamllint`, `gitleaks`
 - [ ] Add a second target for a cloud provider (Hetzner, DigitalOcean), reusing the same `../ansible` playbook
