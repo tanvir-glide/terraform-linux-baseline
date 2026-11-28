@@ -27,9 +27,11 @@ resource "libvirt_volume" "vm_disk" {
 }
 
 resource "libvirt_cloudinit_disk" "init" {
-  name      = "${var.vm_name}-cloudinit.iso"
-  pool      = var.pool
-  user_data = file("${path.module}/user-data.yaml")
+  name = "${var.vm_name}-cloudinit.iso"
+  pool = var.pool
+  user_data = templatefile("${path.module}/user-data.yaml.tftpl", {
+    ssh_key = trimspace(file(pathexpand("${var.ssh_key_path}.pub")))
+  })
 }
 
 resource "libvirt_domain" "vm" {

@@ -27,3 +27,8 @@ variable "disk_bytes" {
   type    = number
   default = 8 * 1024 * 1024 * 1024
 }
+
+variable "ssh_key_path" {
+  type    = string
+  default = "~/.ssh/libvirt_test"
+}

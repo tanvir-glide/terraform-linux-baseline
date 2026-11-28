@@ -84,6 +84,7 @@ container - and runs the [ansible-linux-baseline](https://github.com/tanvir-glid
   ```bash
   ssh-keygen -t ed25519 -f ~/.ssh/libvirt_test -N ""
   ```
+
   The default key path is `~/.ssh/libvirt_test`. To use another key, run `terraform apply -var "ssh_key_path=~/.ssh/other_key"`.
 
 * The Ubuntu Noble cloud image downloaded and placed at `libvirt/noble-server-cloudimg-amd64.img` (from https://cloud-images.ubuntu.com/noble/current/). The image is gitignored - it is 593 MB and should not live in the repository.
